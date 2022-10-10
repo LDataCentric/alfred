@@ -103,7 +103,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:Z
       - {LOCAL_VOLUME_GRAPHQL_SQLITE}:/sqlite
     environment:
-      - AC_EXEC_ENV_IMAGE=kernai/refinery-ac-exec-env:{AC_EXEC_ENV}
       - LF_EXEC_ENV_IMAGE=kernai/refinery-lf-exec-env:{LF_EXEC_ENV}
       - ML_EXEC_ENV_IMAGE=kernai/refinery-ml-exec-env:{ML_EXEC_ENV}
       - RECORD_IDE_IMAGE=kernai/refinery-record-ide-env:{RECORD_IDE_ENV}
