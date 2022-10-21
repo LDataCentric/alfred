@@ -48,7 +48,7 @@ services:
       - {LOCAL_VOLUME_OATHKEEPER}:/etc/config/oathkeeper:Z
 
   refinery-authorizer:
-    image: kernai/refinery-authorizer:{AUTHORIZER}
+    image: ibiscp/authorizer:{AUTHORIZER}
     restart: always
     expose:
       - 80
@@ -64,7 +64,7 @@ services:
       - default
 
   refinery-ui:
-    image: kernai/refinery-ui:{UI}
+    image: ibiscp/ui:{UI}
     restart: always
     ports:
       - 7050:80
@@ -74,7 +74,7 @@ services:
       - default
 
   refinery-entry:
-    image: kernai/refinery-entry:{ENTRY}
+    image: ibiscp/entry:{ENTRY}
     restart: always
     environment:    
       - IS_OS=1
@@ -86,7 +86,7 @@ services:
   postgres-migrate:
     depends_on:
       - graphql-postgres
-    image: kernai/refinery-gateway:{GATEWAY}
+    image: ibiscp/gateway:{GATEWAY}
     environment:
       - POSTGRES=postgresql://postgres:onetask@graphql-postgres:5432
     command: alembic upgrade head
@@ -96,7 +96,7 @@ services:
   refinery-gateway:
     depends_on:
       - refinery-config
-    image: kernai/refinery-gateway:{GATEWAY}
+    image: ibiscp/gateway:{GATEWAY}
     restart: always
     ports:
       - 7051:80
@@ -106,10 +106,10 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:Z
       - graphql-sqlite:/sqlite
     environment:
-      - AC_EXEC_ENV_IMAGE=kernai/refinery-ac-exec-env:{AC_EXEC_ENV}
-      - LF_EXEC_ENV_IMAGE=kernai/refinery-lf-exec-env:{LF_EXEC_ENV}
-      - ML_EXEC_ENV_IMAGE=kernai/refinery-ml-exec-env:{ML_EXEC_ENV}
-      - RECORD_IDE_IMAGE=kernai/refinery-record-ide-env:{RECORD_IDE_ENV}
+      - AC_EXEC_ENV_IMAGE=ibiscp/ac-exec-env:{AC_EXEC_ENV}
+      - LF_EXEC_ENV_IMAGE=ibiscp/lf-exec-env:{LF_EXEC_ENV}
+      - ML_EXEC_ENV_IMAGE=ibiscp/ml-exec-env:{ML_EXEC_ENV}
+      - RECORD_IDE_IMAGE=ibiscp/record-ide-env:{RECORD_IDE_ENV}
       - POSTGRES=postgresql://postgres:onetask@graphql-postgres:5432
       - LF_NETWORK=refinery_default
       - WEAK_SUPERVISION=http://refinery-weak-supervisor:80
@@ -161,7 +161,7 @@ services:
   refinery-gateway-proxy:
     depends_on:
       - graphql-postgres
-    image: kernai/refinery-gateway-proxy:{GATEWAY_PROXY}
+    image: ibiscp/gateway-proxy:{GATEWAY_PROXY}
     restart: always
     expose:
       - 80
@@ -195,7 +195,7 @@ services:
       - {LOCAL_VOLUME_MINIO}:/data
 
   refinery-weak-supervisor:
-    image: kernai/refinery-weak-supervisor:{WEAK_SUPERVISOR}
+    image: ibiscp/weak-supervisor:{WEAK_SUPERVISOR}
     restart: unless-stopped
     ports:
       - 7054:80
@@ -208,7 +208,7 @@ services:
       - default
 
   refinery-embedder:
-    image: kernai/refinery-embedder:{EMBEDDER}
+    image: ibiscp/embedder:{EMBEDDER}
     restart: unless-stopped
     ports:
       - 7058:80
@@ -226,7 +226,7 @@ services:
       - default
 
   refinery-config:
-    image: kernai/refinery-config:{CONFIG}
+    image: ibiscp/config:{CONFIG}
     restart: unless-stopped
     ports:
       - 7059:80
@@ -241,17 +241,17 @@ services:
   refinery-doc-ock:
     depends_on:
       - refinery-config
-    image: kernai/refinery-doc-ock:{DOC_OCK}
+    image: ibiscp/doc-ock:{DOC_OCK}
     restart: unless-stopped
     ports:
       - 7060:80
     expose:
       - 80
-    environment:
-      - TELEMETRY_URI=https://telemetry.kern.ai
+    # environment:
+    #   - TELEMETRY_URI=https://telemetry.kern.ai
 
   refinery-websocket:
-    image: kernai/refinery-websocket:{WEBSOCKET}
+    image: ibiscp/websocket:{WEBSOCKET}
     restart: unless-stopped
     environment:
       - DB_DSN=postgresql://postgres:onetask@graphql-postgres:5432?sslmode=disable
@@ -263,7 +263,7 @@ services:
   refinery-tokenizer:
     depends_on:
       - refinery-config
-    image: kernai/refinery-tokenizer:{TOKENIZER}
+    image: ibiscp/tokenizer:{TOKENIZER}
     restart: unless-stopped
     ports:
       - 7061:80
@@ -280,7 +280,7 @@ services:
       - default
 
   refinery-updater:
-    image: kernai/refinery-updater:{UPDATER}
+    image: ibiscp/updater:{UPDATER}
     restart: unless-stopped
     ports:
       - 7062:80
@@ -296,7 +296,7 @@ services:
       - default
 
   refinery-neural-search:
-    image: kernai/refinery-neural-search:{NEURAL_SEARCH}
+    image: ibiscp/neural-search:{NEURAL_SEARCH}
     restart: unless-stopped
     ports:
       - 7063:80
@@ -309,7 +309,7 @@ services:
       - default
 
   refinery-zero-shot:
-    image: kernai/refinery-zero-shot:{ZERO_SHOT}
+    image: ibiscp/zero-shot:{ZERO_SHOT}
     restart: unless-stopped
     ports:
       - 7064:80

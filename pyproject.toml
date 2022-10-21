@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "alfred"
+version = "0.1.0"
+description = ""
+authors = ["Ibis Prevedello <ibiscp@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">3.8,<4"
+docker = "^6.0.0"
+docker-compose = "^1.29.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

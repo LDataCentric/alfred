@@ -1,0 +1,11 @@
+#!/bin/bash
+
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     HOST_IP=$(ip a | grep "inet " | grep -v 127.0.0.1 | head -1 | grep -o -E "[0-9]+.[0-9]+.[0-9]+.[0-9]+" | head -1);;
+    Darwin*)    HOST_IP=$(ifconfig | grep "inet " | grep -v 127.0.0.1 | head -1 | grep -o -E "[0-9]+.[0-9]+.[0-9]+.[0-9]+" | head -1);;
+esac
+
+MINIO_ENDPOINT="http://$HOST_IP:7053"
+
+python start.py $PWD/refinery $MINIO_ENDPOINT
