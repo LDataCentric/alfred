@@ -114,6 +114,7 @@ services:
       - LF_NETWORK=refinery_default
       - WEAK_SUPERVISION=http://refinery-weak-supervisor:80
       - EMBEDDING_SERVICE=http://refinery-embedder:80
+      # - EMBEDDING_SERVICE=http://host.docker.internal:2873
       - DOC_OCK=http://refinery-doc-ock:80
       - TOKENIZER=http://refinery-tokenizer:80
       - ZERO_SHOT=http://refinery-zero-shot:80
@@ -209,6 +210,9 @@ services:
 
   refinery-embedder:
     image: ibiscp/embedder:{EMBEDDER}
+    # build:
+    #   context: ./modules/refinery-embedder/
+    #   dockerfile: Dockerfile
     restart: unless-stopped
     ports:
       - 7058:80
@@ -220,6 +224,7 @@ services:
       - DOC_OCK=http://refinery-doc-ock:80
       - WS_NOTIFY_ENDPOINT=http://refinery-websocket:8080
       - NEURAL_SEARCH=http://refinery-neural-search:80
+      - CONFIG=http://refinery-config:80
     expose:
       - 80
     networks:
@@ -227,6 +232,9 @@ services:
 
   refinery-config:
     image: ibiscp/config:{CONFIG}
+    # build:
+    #   context: ./modules/refinery-config/
+    #   dockerfile: Dockerfile
     restart: unless-stopped
     ports:
       - 7059:80
@@ -255,6 +263,8 @@ services:
     restart: unless-stopped
     environment:
       - DB_DSN=postgresql://postgres:onetask@graphql-postgres:5432?sslmode=disable
+    ports:
+      - 7065:8080
     expose:
       - 8080
     networks:

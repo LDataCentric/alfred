@@ -3,6 +3,7 @@ refinery/minio-data
 refinery/postgres-data
 refinery/qdrant-storage
 refinery/data
+.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

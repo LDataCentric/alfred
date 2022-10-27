@@ -1,7 +1,7 @@
 {
     "LOCAL_VOLUME_KRATOS": "./kratos",
-    "LOCAL_VOLUME_MINIO": "./minio-data",
+    "LOCAL_VOLUME_MINIO": "./data/minio-data",
     "LOCAL_VOLUME_OATHKEEPER": "./oathkeeper",
-    "LOCAL_VOLUME_POSTGRES": "./postgres-data",
-    "LOCAL_VOLUME_QDRANT": "./qdrant-storage"
+    "LOCAL_VOLUME_POSTGRES": "./data/postgres-data",
+    "LOCAL_VOLUME_QDRANT": "./data/qdrant-storage"
 }

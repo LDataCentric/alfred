@@ -8,4 +8,4 @@ esac
 
 MINIO_ENDPOINT="http://$HOST_IP:7053"
 
-python start.py $PWD/refinery $MINIO_ENDPOINT
+python3 start.py $PWD/refinery $MINIO_ENDPOINT

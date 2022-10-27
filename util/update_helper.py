@@ -28,7 +28,9 @@ def is_any_service_version_changed() -> bool:
 def is_newer(v1: str, v2: str) -> bool:
     a = [int(x) for x in v1.split(".")]
     b = [int(x) for x in v2.split(".")]
-    if len(a) != len(b) and len(a) != 3:
+    a = a + [0] if len(a) == 3 else a
+    b = b + [0] if len(b) == 3 else b
+    if len(a) != len(b) and len(a) != 4:
         raise Exception("invalid version format")
     return __is_newer_int(a, b)
 
