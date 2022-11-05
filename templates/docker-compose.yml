@@ -26,6 +26,8 @@ services:
       - LOG_LEVEL=trace
       - SERVE_PUBLIC_BASE_URL=http://localhost:4455/.ory/kratos/public/
     command: serve -c /etc/config/kratos/kratos.yml --dev --watch-courier
+    ports:
+      - 4434:4434
     volumes:
       - {LOCAL_VOLUME_KRATOS}:/etc/config/kratos:Z
       - kratos-sqlite:/var/lib/sqlite
@@ -65,6 +67,9 @@ services:
 
   refinery-ui:
     image: ibiscp/ui:{UI}
+    # build:
+    #   context: ./modules/refinery-ui/
+    #   dockerfile: Dockerfile
     restart: always
     ports:
       - 7050:80
@@ -122,6 +127,7 @@ services:
       - KRATOS_ADMIN_URL=http://kratos:4434
       - WS_NOTIFY_ENDPOINT=http://refinery-websocket:8080
       - UPDATER=http://refinery-updater:80
+      - CONFIG=http://refinery-config:80
       - S3_URI=object-storage:9000 # remove as soon as multipart upload is merged
       - S3_ENDPOINT={CRED_ENDPOINT}
       - S3_ENDPOINT_LOCAL=object-storage:9000
@@ -169,6 +175,7 @@ services:
     environment:
       - POSTGRES=postgresql://postgres:onetask@postgres:5432
       - GATEWAY=http://refinery-gateway:80
+      # - GATEWAY=http://host.docker.internal:7051
       - KRATOS=http://kratos:4433
       - CONFIG=http://refinery-config:80
     links:
@@ -189,6 +196,7 @@ services:
       - MINIO_ROOT_PASSWORD=JRZtI0SLsEDb3imTy03R
       - MINIO_NOTIFY_WEBHOOK_ENABLE=on
       - MINIO_NOTIFY_WEBHOOK_ENDPOINT=http://refinery-gateway:80/notify
+      # - MINIO_NOTIFY_WEBHOOK_ENDPOINT=http://host.docker.internal:7051/notify
     command: server /data --address :9000 --console-address ":9001"
     networks:
       - default
@@ -240,7 +248,7 @@ services:
       - 7059:80
     environment:
       - IS_MANAGED=0
-      - KERN_S3_ENDPOINT={MINIO_ENDPOINT}
+      - KERN_S3_ENDPOINT=http://localhost:7053
     expose:
       - 80
     networks:

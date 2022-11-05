@@ -10,7 +10,7 @@ from util.constants import (
 from util.docker_helper import get_credential_ip
 
 
-def process_docker_compose_template(refinery_dir: str, minio_endpoint: str) -> None:
+def process_docker_compose_template(refinery_dir: str) -> None:
 
     credential_ip = get_credential_ip()
     cred_endpoint = f"http://{credential_ip}:7053"
@@ -31,7 +31,7 @@ def process_docker_compose_template(refinery_dir: str, minio_endpoint: str) -> N
         **settings,
         **{
             "CRED_ENDPOINT": cred_endpoint,
-            "MINIO_ENDPOINT": minio_endpoint,
+            # "MINIO_ENDPOINT": minio_endpoint,
         },
     )
 
