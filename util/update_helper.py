@@ -51,7 +51,7 @@ def updater_service_update_to_newest():
     # exec command to update the updater service.
     # The following command executes the update_to_current command on the updater service.
     exit_code, output = exec_command_on_container(
-        "refinery-updater", "python -c 'import app; app.update_to_newest()'"
+        "updater", "python -c 'import app; app.update_to_newest()'"
     )
     if exit_code == 0:
         return True, output
@@ -63,14 +63,14 @@ def wait_until_updater_is_ready(timeout: int = 300) -> bool:
     start_time = time.time()
 
     while start_time + timeout > time.time():
-        if is_uvicorn_application_started("refinery-updater"):
+        if is_uvicorn_application_started("updater"):
             return True
     return False
 
 
 def wait_until_db_and_updater_service_are_ready() -> bool:
     if wait_until_postgres_is_ready():
-        if is_uvicorn_application_started("refinery-updater"):
+        if is_uvicorn_application_started("updater"):
             return True
         else:
             return wait_until_updater_is_ready()

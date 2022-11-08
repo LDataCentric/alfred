@@ -43,10 +43,10 @@
     - handler: noop
 
 -
-  id: "kernai:refinery-entry:anonymous"
+  id: "kernai:entry:anonymous"
   upstream:
     preserve_host: true
-    url: "http://refinery-entry:80"
+    url: "http://entry:80"
     strip_path: /auth/
   match:
     url: "http://localhost:4455/auth/<{,**}>"
@@ -62,10 +62,10 @@
       handler: noop
 
 -
-  id: "kernai:refinery-ui:protected"
+  id: "kernai:ui:protected"
   upstream:
     preserve_host: true
-    url: "http://refinery-ui:80"
+    url: "http://ui:80"
     strip_path: /app/
   match:
     url: "http://localhost:4455<{,/*,/app,/app/**,/sockjs-node/**}>"
@@ -85,10 +85,11 @@
         return_to_query_param: 'return_to'
 
 -
-  id: "kernai:refinery-gateway:protected"
+  id: "kernai:gateway:protected"
   upstream:
     preserve_host: true
-    url: "http://refinery-gateway:80"
+    # url: "http://host.docker.internal:2875"
+    url: "http://gateway:80"
   match:
     url: "http://localhost:4455/<{graphql/,graphql/**}>"
     methods:
@@ -131,10 +132,10 @@
         to: http://localhost:4455/auth/login
 
 -
-  id: "kernai:refinery-config"
+  id: "kernai:config"
   upstream:
     preserve_host: false
-    url: "http://refinery-config:80"
+    url: "http://config:80"
     strip_path: /config/
   match:
     url: "http://localhost:4455/config/<{,**}>"
@@ -152,10 +153,10 @@
         to: http://localhost:4455/auth/login
 
 -
-  id: "kernai:refinery-gateway-proxy"
+  id: "kernai:gateway-proxy"
   upstream:
     preserve_host: true
-    url: "http://refinery-gateway-proxy:80"
+    url: "http://gateway-proxy:80"
     strip_path: /api/
   match:
     url: "http://localhost:4455/api/<{,**}>"
@@ -175,10 +176,10 @@
         to: http://localhost:4455/auth/login
 
 -
-  id: "kernai:refinery-websocket"
+  id: "kernai:websocket"
   upstream:
     preserve_host: true
-    url: "http://refinery-websocket:8080"
+    url: "http://websocket:8080"
     strip_path: /notify/
   match:
     url: "http://localhost:4455/notify/ws"

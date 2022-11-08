@@ -109,8 +109,8 @@ def wait_until_refinery_is_ready(timeout: int = 60) -> bool:
     start_time = time.time()
 
     while start_time + timeout > time.time():
-        gateway_ready = is_uvicorn_application_started("refinery-gateway")
-        ui_ready = is_ui_service_ready("refinery-ui")
+        gateway_ready = is_uvicorn_application_started("gateway")
+        ui_ready = is_ui_service_ready("ui")
         if gateway_ready and ui_ready:
             return True
         time.sleep(1)

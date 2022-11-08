@@ -49,7 +49,7 @@ services:
     volumes:
       - {LOCAL_VOLUME_OATHKEEPER}:/etc/config/oathkeeper:Z
 
-  refinery-authorizer:
+  authorizer:
     image: ibiscp/authorizer:{AUTHORIZER}
     restart: always
     expose:
@@ -65,10 +65,10 @@ services:
     networks:
       - default
 
-  refinery-ui:
+  ui:
     image: ibiscp/ui:{UI}
     # build:
-    #   context: ./modules/refinery-ui/
+    #   context: ./modules/ui/
     #   dockerfile: Dockerfile
     restart: always
     ports:
@@ -78,7 +78,7 @@ services:
     networks:
       - default
 
-  refinery-entry:
+  entry:
     image: ibiscp/entry:{ENTRY}
     restart: always
     environment:    
@@ -98,9 +98,9 @@ services:
     networks:
       - default
 
-  refinery-gateway:
+  gateway:
     depends_on:
-      - refinery-config
+      - config
     image: ibiscp/gateway:{GATEWAY}
     restart: always
     ports:
@@ -117,17 +117,18 @@ services:
       - RECORD_IDE_IMAGE=ibiscp/record-ide-env:{RECORD_IDE_ENV}
       - POSTGRES=postgresql://postgres:onetask@graphql-postgres:5432
       - LF_NETWORK=refinery_default
-      - WEAK_SUPERVISION=http://refinery-weak-supervisor:80
-      - EMBEDDING_SERVICE=http://refinery-embedder:80
+      - WEAK_SUPERVISION=http://weak-supervisor:80
+      - EMBEDDING_SERVICE=http://embedder:80
       # - EMBEDDING_SERVICE=http://host.docker.internal:2873
-      - DOC_OCK=http://refinery-doc-ock:80
-      - TOKENIZER=http://refinery-tokenizer:80
-      - ZERO_SHOT=http://refinery-zero-shot:80
-      - NEURAL_SEARCH=http://refinery-neural-search:80
+      - DOC_OCK=http://doc-ock:80
+      # - TOKENIZER=http://tokenizer:80
+      - TOKENIZER=http://host.docker.internal:2874
+      - ZERO_SHOT=http://zero-shot:80
+      - NEURAL_SEARCH=http://neural-search:80
       - KRATOS_ADMIN_URL=http://kratos:4434
-      - WS_NOTIFY_ENDPOINT=http://refinery-websocket:8080
-      - UPDATER=http://refinery-updater:80
-      - CONFIG=http://refinery-config:80
+      - WS_NOTIFY_ENDPOINT=http://websocket:8080
+      - UPDATER=http://updater:80
+      - CONFIG=http://config:80
       - S3_URI=object-storage:9000 # remove as soon as multipart upload is merged
       - S3_ENDPOINT={CRED_ENDPOINT}
       - S3_ENDPOINT_LOCAL=object-storage:9000
@@ -165,7 +166,7 @@ services:
     volumes:
       - {LOCAL_VOLUME_QDRANT}:/qdrant/storage
 
-  refinery-gateway-proxy:
+  gateway-proxy:
     depends_on:
       - graphql-postgres
     image: ibiscp/gateway-proxy:{GATEWAY_PROXY}
@@ -174,10 +175,10 @@ services:
       - 80
     environment:
       - POSTGRES=postgresql://postgres:onetask@postgres:5432
-      - GATEWAY=http://refinery-gateway:80
+      - GATEWAY=http://gateway:80
       # - GATEWAY=http://host.docker.internal:7051
       - KRATOS=http://kratos:4433
-      - CONFIG=http://refinery-config:80
+      - CONFIG=http://config:80
     links:
       - "graphql-postgres:postgres"
     networks:
@@ -195,7 +196,7 @@ services:
       - MINIO_ROOT_USER=onetask
       - MINIO_ROOT_PASSWORD=JRZtI0SLsEDb3imTy03R
       - MINIO_NOTIFY_WEBHOOK_ENABLE=on
-      - MINIO_NOTIFY_WEBHOOK_ENDPOINT=http://refinery-gateway:80/notify
+      - MINIO_NOTIFY_WEBHOOK_ENDPOINT=http://gateway:80/notify
       # - MINIO_NOTIFY_WEBHOOK_ENDPOINT=http://host.docker.internal:7051/notify
     command: server /data --address :9000 --console-address ":9001"
     networks:
@@ -203,7 +204,7 @@ services:
     volumes:
       - {LOCAL_VOLUME_MINIO}:/data
 
-  refinery-weak-supervisor:
+  weak-supervisor:
     image: ibiscp/weak-supervisor:{WEAK_SUPERVISOR}
     restart: unless-stopped
     ports:
@@ -212,14 +213,14 @@ services:
       - 80
     environment:
       - POSTGRES=postgresql://postgres:onetask@graphql-postgres:5432
-      - WS_NOTIFY_ENDPOINT=http://refinery-websocket:8080
+      - WS_NOTIFY_ENDPOINT=http://websocket:8080
     networks:
       - default
 
-  refinery-embedder:
+  embedder:
     image: ibiscp/embedder:{EMBEDDER}
     # build:
-    #   context: ./modules/refinery-embedder/
+    #   context: ./modules/embedder/
     #   dockerfile: Dockerfile
     restart: unless-stopped
     ports:
@@ -229,19 +230,19 @@ services:
       - S3_ENDPOINT_LOCAL=object-storage:9000
       - S3_ACCESS_KEY=onetask
       - S3_SECRET_KEY=JRZtI0SLsEDb3imTy03R
-      - DOC_OCK=http://refinery-doc-ock:80
-      - WS_NOTIFY_ENDPOINT=http://refinery-websocket:8080
-      - NEURAL_SEARCH=http://refinery-neural-search:80
-      - CONFIG=http://refinery-config:80
+      - DOC_OCK=http://doc-ock:80
+      - WS_NOTIFY_ENDPOINT=http://websocket:8080
+      - NEURAL_SEARCH=http://neural-search:80
+      - CONFIG=http://config:80
     expose:
       - 80
     networks:
       - default
 
-  refinery-config:
+  config:
     image: ibiscp/config:{CONFIG}
     # build:
-    #   context: ./modules/refinery-config/
+    #   context: ./modules/config/
     #   dockerfile: Dockerfile
     restart: unless-stopped
     ports:
@@ -254,19 +255,20 @@ services:
     networks:
       - default
 
-  refinery-doc-ock:
+  doc-ock:
     depends_on:
-      - refinery-config
+      - config
     image: ibiscp/doc-ock:{DOC_OCK}
     restart: unless-stopped
     ports:
       - 7060:80
     expose:
       - 80
-    # environment:
+    environment:
+      - CONFIG=http://config:80
     #   - TELEMETRY_URI=https://telemetry.kern.ai
 
-  refinery-websocket:
+  websocket:
     image: ibiscp/websocket:{WEBSOCKET}
     restart: unless-stopped
     environment:
@@ -278,32 +280,33 @@ services:
     networks:
       - default
 
-  refinery-tokenizer:
-    depends_on:
-      - refinery-config
-    image: ibiscp/tokenizer:{TOKENIZER}
-    restart: unless-stopped
-    ports:
-      - 7061:80
-    environment:
-      - POSTGRES=postgresql://postgres:onetask@graphql-postgres:5432
-      - S3_ENDPOINT_LOCAL=object-storage:9000
-      - S3_ACCESS_KEY=onetask
-      - S3_SECRET_KEY=JRZtI0SLsEDb3imTy03R
-      - DOC_OCK=http://refinery-doc-ock:80
-      - WS_NOTIFY_ENDPOINT=http://refinery-websocket:8080
-    expose:
-      - 80
-    networks:
-      - default
+  # tokenizer:
+  #   depends_on:
+  #     - config
+  #   image: ibiscp/tokenizer:{TOKENIZER}
+  #   restart: unless-stopped
+  #   ports:
+  #     - 7061:80
+  #   environment:
+  #     - POSTGRES=postgresql://postgres:onetask@graphql-postgres:5432
+  #     - S3_ENDPOINT_LOCAL=object-storage:9000
+  #     - S3_ACCESS_KEY=onetask
+  #     - S3_SECRET_KEY=JRZtI0SLsEDb3imTy03R
+  #     - DOC_OCK=http://doc-ock:80
+  #     - WS_NOTIFY_ENDPOINT=http://websocket:8080
+  #     - CONFIG=http://config:80
+  #   expose:
+  #     - 80
+  #   networks:
+  #     - default
 
-  refinery-updater:
+  updater:
     image: ibiscp/updater:{UPDATER}
     restart: unless-stopped
     ports:
       - 7062:80
     environment:
-      - NEURAL_SEARCH=http://refinery-neural-search:80
+      - NEURAL_SEARCH=http://neural-search:80
       - POSTGRES=postgresql://postgres:onetask@graphql-postgres:5432
       - S3_ENDPOINT_LOCAL=object-storage:9000
       - S3_ACCESS_KEY=onetask
@@ -313,7 +316,7 @@ services:
     networks:
       - default
 
-  refinery-neural-search:
+  neural-search:
     image: ibiscp/neural-search:{NEURAL_SEARCH}
     restart: unless-stopped
     ports:
@@ -326,14 +329,14 @@ services:
     networks:
       - default
 
-  refinery-zero-shot:
+  zero-shot:
     image: ibiscp/zero-shot:{ZERO_SHOT}
     restart: unless-stopped
     ports:
       - 7064:80
     environment:
       - POSTGRES=postgresql://postgres:onetask@graphql-postgres:5432
-      - WS_NOTIFY_ENDPOINT=http://refinery-websocket:8080
+      - WS_NOTIFY_ENDPOINT=http://websocket:8080
     expose:
       - 80
     networks:
