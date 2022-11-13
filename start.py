@@ -21,7 +21,6 @@ from util.update_helper import (
 )
 
 refinery_dir = sys.argv[1]
-# minio_endpoint = sys.argv[2]
 
 if wait_until_refinery_is_ready(timeout=1):
     print("Refinery is already running!", flush=True)
