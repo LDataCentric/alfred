@@ -50,7 +50,7 @@ if run_updates:
         sys.exit(0)
 
 print("Starting all containers...", flush=True)
-subprocess.call(["docker-compose", "-f", DOCKER_COMPOSE, "up", "-d"])
+subprocess.call(["docker-compose", "-f", DOCKER_COMPOSE, "up", "-d", "--build"])
 
 wait_until_postgres_migration_is_exited()
 
