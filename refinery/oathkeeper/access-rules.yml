@@ -88,7 +88,7 @@
   id: "kernai:gateway:protected"
   upstream:
     preserve_host: true
-    # url: "http://host.docker.internal:2875"
+    # url: "http://host.docker.internal:7051"
     url: "http://gateway:80"
   match:
     url: "http://localhost:4455/<{graphql/,graphql/**}>"

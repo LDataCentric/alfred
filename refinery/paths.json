@@ -1,0 +1,20 @@
+{
+    "BASE_URL": "http://localhost:4455",
+    "CONFIG_URL": "http://config:80",
+    "DOC_OCK_URL": "http://doc-ock:80",
+    "EMBEDDING_SERVICE_URL": "http://embedder:80",
+    "GATEWAY_URL": "http://gateway:80",
+    "_GATEWAY_URL": "http://host.docker.internal:7051",
+    "KERN_S3_ENDPOINT_URL": "http://localhost:7053",
+    "KRATOS_ADMIN_URL": "http://kratos:4434",
+    "KRATOS_URL": "http://kratos:4433",
+    "NEURAL_SEARCH_URL": "http://neural-search:80",
+    "POSTGRES_PORT": "5432",
+    "S3_ENDPOINT_LOCAL_URL": "object-storage:9000",
+    "TOKENIZER_URL": "http://tokenizer:80",
+    "_TOKENIZER_URL": "http://host.docker.internal:2874",
+    "UPDATER_URL": "http://updater:80",
+    "WEAK_SUPERVISOR_URL": "http://weak-supervisor:80",
+    "WS_NOTIFY_ENDPOINT_URL": "http://websocket:8080",
+    "ZERO_SHOT_URL": "http://zero-shot:80"
+}
