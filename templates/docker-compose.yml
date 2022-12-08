@@ -67,9 +67,6 @@ services:
 
   ui:
     image: ibiscp/ui:{UI}
-    # build:
-    #   context: ../modules/refinery-ui/
-    #   dockerfile: Dockerfile
     restart: always
     ports:
       - 7050:80
@@ -100,9 +97,6 @@ services:
 
   gateway:
     image: ibiscp/gateway:{GATEWAY}
-    # build:
-    #   context: ../modules/refinery-gateway/
-    #   dockerfile: Dockerfile
     depends_on:
       - config
     restart: always
@@ -217,9 +211,6 @@ services:
 
   embedder:
     image: ibiscp/embedder:{EMBEDDER}
-    # build:
-    #   context: ./modules/embedder/
-    #   dockerfile: Dockerfile
     restart: unless-stopped
     ports:
       - 7058:80
