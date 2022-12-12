@@ -33,7 +33,7 @@ def get_psql_command(sql: str) -> str:
     return f'psql -d {CONNECTION_STRING} -c "{sql}" -qtAX'
 
 
-def wait_until_postgres_is_ready(timeout: int = 300) -> bool:
+def wait_until_postgres_is_ready(timeout: int = 1000) -> bool:
     start_time = time.time()
 
     while start_time + timeout > time.time():
