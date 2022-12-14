@@ -4,6 +4,7 @@ refinery/postgres-data
 refinery/qdrant-storage
 refinery/data
 .DS_Store
+modules
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
