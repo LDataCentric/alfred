@@ -66,10 +66,10 @@ services:
       - default
 
   ui:
-    image: ibiscp/ui:{UI}
-    # build:
-    #   context: ./modules/ui/
-    #   dockerfile: Dockerfile
+    # image: ibiscp/ui:{UI}
+    build:
+      context: ../refinery/modules/refinery-ui/
+      dockerfile: Dockerfile
     restart: always
     ports:
       - 7050:80

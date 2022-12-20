@@ -84,6 +84,27 @@
         to: http://localhost:4455/auth/login
         return_to_query_param: 'return_to'
 
+- id: "react:ui:protected"
+  upstream:
+    preserve_host: true
+    url: "http://ui:80"
+    strip_path: /app/
+  match:
+    url: "http://localhost:3000<{,/*,/app,/app/**,/sockjs-node/**}>"
+    methods:
+      - GET
+  authenticators:
+    - handler: cookie_session
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: id_token
+  errors:
+    - handler: redirect
+      config:
+        to: http://localhost:4455/auth/login
+        return_to_query_param: "return_to"
+
 -
   id: "kernai:gateway:protected"
   upstream:
@@ -195,3 +216,23 @@
     - handler: redirect
       config:
         to: http://localhost:4455/auth/login
+
+- id: "react:whoAmI"
+  upstream:
+    preserve_host: true
+    url: "http://localhost:4455/.ory/kratos/public/sessions/whoami"
+  match:
+    url: "http://localhost:4455/sessions/whoami"
+    methods:
+      - GET
+  authenticators:
+    - handler: cookie_session
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: id_token
+  errors:
+    - handler: redirect
+      config:
+        to: http://localhost:4455/auth/login
+        return_to_query_param: "return_to"

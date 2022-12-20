@@ -7,7 +7,9 @@ serve:
     cors:
       enabled: true
       allowed_origins:
-        - "*"
+        - http:localhost:3000
+        - http:localhost:4455
+        - http:kratos:4433
       allowed_methods:
         - POST
         - GET
@@ -16,9 +18,11 @@ serve:
         - DELETE
       allowed_headers:
         - Authorization
+        - Cookie
         - Content-Type
       exposed_headers:
         - Content-Type
+        - Set-Cookie
       allow_credentials: true
       debug: true
 
