@@ -1,0 +1,8 @@
+#!/bin/bash
+
+rm -rf refinery/backup
+rm -rf refinery/data
+
+docker volume prune -f
+
+python3 start.py $PWD/refinery

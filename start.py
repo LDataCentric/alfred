@@ -27,7 +27,7 @@ if wait_until_refinery_is_ready(timeout=1):
     sys.exit(0)
 
 print("Creating docker-compose.yml file...", flush=True)
-process_docker_compose_template(refinery_dir) #, minio_endpoint)
+process_docker_compose_template(refinery_dir)
 print("Creating jwks.json secret if not existing...", flush=True)
 create_jwks_secret_if_not_existing()
 print("Checking and pulling exec env images...", flush=True)

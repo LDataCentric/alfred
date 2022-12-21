@@ -9,7 +9,12 @@ readme = "README.md"
 python = ">3.8,<4"
 docker = "^6.0.0"
 docker-compose = "^1.29.2"
+python-dotenv = "^0.21.0"
+wget = "^3.2"
 
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.17.1"
+yfinance = "^0.1.85"
 
 [build-system]
 requires = ["poetry-core"]
