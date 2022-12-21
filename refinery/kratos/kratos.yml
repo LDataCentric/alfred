@@ -29,6 +29,7 @@ selfservice:
   default_browser_return_url: http://localhost:3000
   whitelisted_return_urls:
     - http://localhost:4455/
+    - http://localhost:3000/
 
   methods:
     password:
