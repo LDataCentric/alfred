@@ -15,7 +15,7 @@ from util.docker_helper import get_credential_ip
 def process_docker_compose_template(refinery_dir: str) -> None:
 
     credential_ip = get_credential_ip()
-    cred_endpoint = f"http://{credential_ip}:7053"
+    cred_endpoint = f"{credential_ip}:7053"
 
     with open(DOCKER_COMPOSE_TEMPLATE, "r") as f:
         template = f.read()
