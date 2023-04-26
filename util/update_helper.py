@@ -70,8 +70,9 @@ def wait_until_updater_is_ready(timeout: int = 300) -> bool:
 
 def wait_until_db_and_updater_service_are_ready() -> bool:
     if wait_until_postgres_is_ready():
-        if is_uvicorn_application_started("updater"):
-            return True
-        else:
-            return wait_until_updater_is_ready()
+        return True
+        # if is_uvicorn_application_started("updater"):
+        #     return True
+        # else:
+        #     return wait_until_updater_is_ready()
     return False
